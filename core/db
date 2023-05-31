@@ -1,0 +1,40 @@
+{
+  "todos": [
+    {
+      "id": "50ae27bf-bd81-4de8-b879-ebaa7e05c20a",
+      "date": "2023-05-31T20:47:41.563Z",
+      "content": "primeira todo",
+      "done": false
+    },
+    {
+      "id": "515c881d-3ff2-4dda-9870-5a08de201841",
+      "date": "2023-05-31T20:47:41.564Z",
+      "content": "atualizada",
+      "done": false
+    },
+    {
+      "id": "e06908b9-eab6-47bb-8765-bdc51bb7d15e",
+      "date": "2023-05-31T20:47:41.565Z",
+      "content": "segunda todo",
+      "done": false
+    },
+    {
+      "id": "64a308d5-0e24-4b1b-884c-fd3194bdc580",
+      "date": "2023-05-31T20:47:41.565Z",
+      "content": "terceira todo",
+      "done": false
+    },
+    {
+      "id": "9c108f14-0612-45c1-98df-2d25c82e1146",
+      "date": "2023-05-31T20:47:47.007Z",
+      "content": "nyna",
+      "done": false
+    },
+    {
+      "id": "f911fe53-041a-4a6c-9f83-17b615f1bc87",
+      "date": "2023-05-31T20:47:49.756Z",
+      "content": "loki",
+      "done": false
+    }
+  ]
+}
