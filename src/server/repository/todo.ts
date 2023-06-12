@@ -1,4 +1,4 @@
-import { readTodos, createTodo } from "@db-crud-todo";
+import { read, create, update } from "@db-crud-todo";
 
 // Model/Schema
 interface Todo {
@@ -27,7 +27,7 @@ function get({
 }: TodoRepositoryGetParams = {}): TodoRepositoryGetOutput {
   const currentPage = page || 1;
   const currentLimit = limit || 10;
-  const ALL_TODOS = readTodos().reverse();
+  const ALL_TODOS = read().reverse();
 
   const startIndex = (currentPage - 1) * currentLimit;
   const endIndex = currentPage * currentLimit;
@@ -42,12 +42,27 @@ function get({
 }
 
 async function createByContent(content: string): Promise<Todo> {
-  const newTodo = createTodo(content);
+  const newTodo = create(content);
 
   return newTodo;
+}
+
+async function toggleDone(id: string): Promise<Todo> {
+  const ALL_TODOS = read();
+
+  const todo = ALL_TODOS.find((todo) => todo.id === id);
+
+  if (!todo) throw new Error(`Todo with id "${id}" not found`);
+
+  const updatedTodo = update(todo.id, {
+    done: !todo.done,
+  });
+
+  return updatedTodo;
 }
 
 export const todoRepository = {
   get,
   createByContent,
+  toggleDone
 };

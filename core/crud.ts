@@ -13,7 +13,7 @@ interface Todo {
   done: boolean;
 }
 
-export function createTodo(content: string): Todo {
+export function create(content: string): Todo {
   // salvar  o content doo sistema
   const todo: Todo = {
     id: uuid(),
@@ -21,7 +21,7 @@ export function createTodo(content: string): Todo {
     content: content,
     done: false,
   };
-  const todos: Array<Todo> = [...readTodos(), todo];
+  const todos: Array<Todo> = [...read(), todo];
   writeFileSync(
     DB_FILE_PATH,
     JSON.stringify(
@@ -35,15 +35,15 @@ export function createTodo(content: string): Todo {
   return todo;
 }
 
-export function readTodos(): Array<Todo> {
+export function read(): Array<Todo> {
   const dbString = readFileSync(DB_FILE_PATH, "utf-8");
   const db = JSON.parse(dbString || "{}");
   if (!db.todos) return []; // fail fast validation
   return db.todos || [];
 }
 
-function update(id: UUID, partialTodo: Partial<Todo>) {
-  const todos = readTodos();
+export function update(id: UUID, partialTodo: Partial<Todo>) {
+  const todos = read();
   const updatedTodos = todos.map((todo) => {
     if (todo.id === id) {
       return { ...todo, ...partialTodo };
@@ -74,7 +74,7 @@ function updateContentById(id: UUID, content: string): Todo {
 }
 
 function deleteTodoById(id: UUID) {
-  const todoList = readTodos();
+  const todoList = read();
   const newTodoList = todoList.filter((todo) => todo.id !== id);
   writeFileSync(
     DB_FILE_PATH,
@@ -94,17 +94,17 @@ function clearDB() {
 
 // [SIMULATION]
 clearDB();
-createTodo("primeira todo");
-const secondTodo = createTodo("segunda todo");
+create("primeira todo");
+const secondTodo = create("segunda todo");
 deleteTodoById(secondTodo.id);
-const thirdTodo = createTodo("terceira todo");
+const thirdTodo = create("terceira todo");
 // update(terceiraTodo.id, {
 // 	content: 'Segunda TODO com novo content',
 // 	done: true
 // })
 updateContentById(thirdTodo.id, "atualizada");
-createTodo("segunda todo");
-createTodo("terceira todo");
-// const todos = readTodos();
+create("segunda todo");
+create("terceira todo");
+// const todos = read();
 // console.log(todos);
 // console.log(todos.length);
