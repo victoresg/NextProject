@@ -93,18 +93,18 @@ function clearDB() {
 }
 
 // [SIMULATION]
-clearDB();
-create("primeira todo");
-const secondTodo = create("segunda todo");
-deleteTodoById(secondTodo.id);
-const thirdTodo = create("terceira todo");
+// clearDB();
+// create("primeira todo");
+// const secondTodo = create("segunda todo");
+// deleteTodoById(secondTodo.id);
+// const thirdTodo = create("terceira todo");
 // update(terceiraTodo.id, {
 // 	content: 'Segunda TODO com novo content',
 // 	done: true
 // })
-updateContentById(thirdTodo.id, "atualizada");
-create("segunda todo");
-create("terceira todo");
+// updateContentById(thirdTodo.id, "atualizada");
+// create("segunda todo");
+// create("terceira todo");
 // const todos = read();
 // console.log(todos);
 // console.log(todos.length);

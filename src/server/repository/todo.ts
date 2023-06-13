@@ -48,6 +48,7 @@ async function createByContent(content: string): Promise<Todo> {
 }
 
 async function toggleDone(id: string): Promise<Todo> {
+  console.log('5')
   const ALL_TODOS = read();
 
   const todo = ALL_TODOS.find((todo) => todo.id === id);
