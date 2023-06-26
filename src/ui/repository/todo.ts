@@ -64,7 +64,7 @@ async function toggleDone(todoId: string): Promise<Todo> {
   const response = await fetch(`/api/todos/${todoId}/toggle-done`, {
     method: "PUT",
   });
-  console.log('2')
+
   if (response.ok) {
     const serverResponse = await response.json();
     const ServerResponseSchema = schema.object({
@@ -81,13 +81,30 @@ async function toggleDone(todoId: string): Promise<Todo> {
   throw new Error("Server Error");
 }
 
+async function deleteById(id: string) {
+  const response = await fetch(`/api/todos/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to delete");
+  }
+}
+
 export const todoRepository = {
   get,
   createByContent,
-  toggleDone
+  toggleDone,
+  deleteById,
 };
 
 // Model/Schema
+// interface Todo {
+//   id: string;
+//   content: string;
+//   date: Date;
+//   done: boolean;
+// }
 
 function parseTodosFromServer(responseBody: unknown): {
   total: number;

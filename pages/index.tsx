@@ -2,7 +2,8 @@ import React from "react";
 import { GlobalStyles } from "@ui/theme/GlobalStyles";
 import { todoController } from "@ui/controller/todo";
 
-const bg = "/bg.jpeg";
+// const bg = "https://mariosouto.com/cursos/crudcomqualidade/bg";
+const bg = "/bg.jpeg"; // inside public folder
 
 interface HomeTodo {
   id: string;
@@ -22,8 +23,10 @@ function HomePage() {
     search,
     todos
   );
+
   const hasMorePages = totalPages > page;
   const hasNoTodos = homeTodos.length === 0 && !isLoading;
+
   React.useEffect(() => {
     if (!initialLoadComplete.current) {
       todoController
@@ -38,6 +41,7 @@ function HomePage() {
         });
     }
   }, []);
+
   return (
     <main>
       <GlobalStyles themeName="devsoutinho" />
@@ -54,12 +58,14 @@ function HomePage() {
             event.preventDefault();
             todoController.create({
               content: newTodoContent,
+              // .then
               onSuccess(todo: HomeTodo) {
                 setTodos((oldTodos) => {
                   return [todo, ...oldTodos];
                 });
                 setNewTodoContent("");
               },
+              // .catch
               onError(customMessage) {
                 alert(
                   customMessage ||
@@ -112,31 +118,31 @@ function HomePage() {
               return (
                 <tr key={todo.id}>
                   <td>
-                  <input
-                    type="checkbox"
-                    checked={todo.done}
-                    onChange={function handleToggle() {
-                      todoController.toggleDone({
-                        id: todo.id,
-                        onError() {
-                          alert("Falha ao atualizar a TODO :(");
-                        },
-                        updateTodoOnScreen() {
-                          setTodos((currentTodos) => {
-                            return currentTodos.map((currentTodo) => {
-                              if (currentTodo.id === todo.id) {
-                                return {
-                                  ...currentTodo,
-                                  done: !currentTodo.done,
-                                };
-                              }
-                              return currentTodo;
+                    <input
+                      type="checkbox"
+                      checked={todo.done}
+                      onChange={function handleToggle() {
+                        todoController.toggleDone({
+                          id: todo.id,
+                          onError() {
+                            alert("Falha ao atualizar a TODO :(");
+                          },
+                          updateTodoOnScreen() {
+                            setTodos((currentTodos) => {
+                              return currentTodos.map((currentTodo) => {
+                                if (currentTodo.id === todo.id) {
+                                  return {
+                                    ...currentTodo,
+                                    done: !currentTodo.done,
+                                  };
+                                }
+                                return currentTodo;
+                              });
                             });
-                          });
-                        },
-                      });
-                    }}
-                  />
+                          },
+                        });
+                      }}
+                    />
                   </td>
                   <td>{todo.id.substring(0, 4)}</td>
                   <td>
@@ -144,7 +150,27 @@ function HomePage() {
                     {todo.done && <s>{todo.content}</s>}
                   </td>
                   <td align="right">
-                    <button data-type="delete">Apagar</button>
+                    <button
+                      data-type="delete"
+                      onClick={function handleClick() {
+                        todoController
+                          .deleteById(todo.id)
+                          .then(() => {
+                            setTodos((currentTodos) => {
+                              return currentTodos.filter((currentTodo) => {
+                                if (currentTodo.id === todo.id) return false;
+
+                                return true;
+                              });
+                            });
+                          })
+                          .catch(() => {
+                            console.error("Failed to delete");
+                          });
+                      }}
+                    >
+                      Apagar
+                    </button>
                   </td>
                 </tr>
               );

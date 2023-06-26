@@ -5,12 +5,11 @@ import { z as schema } from "zod";
 interface TodoControllerGetParams {
   page: number;
 }
-
 async function get(params: TodoControllerGetParams) {
   // Fazer a lógica de pegar os dados
   return todoRepository.get({
     page: params.page,
-    limit: 1,
+    limit: 2,
   });
 }
 
@@ -32,7 +31,6 @@ interface TodoControllerCreateParams {
   onError: (customMessage?: string) => void;
   onSuccess: (todo: Todo) => void;
 }
-
 function create({ content, onSuccess, onError }: TodoControllerCreateParams) {
   // Fail Fast
   const parsedParams = schema.string().nonempty().safeParse(content);
@@ -56,7 +54,6 @@ interface TodoControllerToggleDoneParams {
   updateTodoOnScreen: () => void;
   onError: () => void;
 }
-
 function toggleDone({
   id,
   updateTodoOnScreen,
@@ -64,7 +61,7 @@ function toggleDone({
 }: TodoControllerToggleDoneParams) {
   // Optmistic Update
   // updateTodoOnScreen();
-  console.log('1')
+
   todoRepository
     .toggleDone(id)
     .then(() => {
@@ -76,9 +73,15 @@ function toggleDone({
     });
 }
 
+async function deleteById(id: string): Promise<void> {
+  const todoId = id;
+  await todoRepository.deleteById(todoId);
+}
+
 export const todoController = {
   get,
   filterTodosByContent,
   create,
-  toggleDone
+  toggleDone,
+  deleteById,
 };
